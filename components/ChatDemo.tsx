@@ -12,6 +12,7 @@ import {
   Pie,
   Cell
 } from 'recharts';
+import { askVitalis } from '../services/geminiService';
 
 const performanceData = [
   { day: 'Mon', load: 40 },
@@ -38,26 +39,21 @@ const ChatDemo: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
-    const newMsgs = [...messages, { role: 'user', text: input }];
-    setMessages(newMsgs);
+    
+    // 1. Add User Message
+    const userMsg = input;
+    setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
     setInput('');
     setIsTyping(true);
     
-    // Simulate AI Response logic
-    setTimeout(() => {
-      let reply = "Got it. Let's update your plan.";
-      if (input.toLowerCase().includes('tired') || input.toLowerCase().includes('sleep')) {
-        reply = "I hear you. Rest is crucial. Let's switch today to a 15-minute gentle yoga flow to boost recovery without strain. Shall I load the video?";
-      } else if (input.toLowerCase().includes('food') || input.toLowerCase().includes('ate')) {
-         reply = "Logged. That looks like a solid 25g of protein. You're still about 40g short of your daily goal. Try a greek yogurt snack later?";
-      } else {
-         reply = "Noted! I've adjusted your weekly volume accordingly. Keep up the momentum! 🚀";
-      }
-      setMessages(curr => [...curr, { role: 'ai', text: reply }]);
-      setIsTyping(false);
-    }, 1500);
+    // 2. Call Gemini API
+    const aiResponse = await askVitalis(userMsg);
+
+    // 3. Add AI Response
+    setMessages(prev => [...prev, { role: 'ai', text: aiResponse }]);
+    setIsTyping(false);
   };
 
   useEffect(() => {
@@ -105,7 +101,7 @@ const ChatDemo: React.FC = () => {
             className="flex-1 bg-transparent outline-none text-sm text-slate-700"
           />
           <Mic size={20} className="text-slate-400 cursor-pointer hover:text-emerald-500 transition-colors" />
-          <button onClick={handleSend} className="bg-emerald-500 text-white p-1.5 rounded-full hover:bg-emerald-600 transition-all active:scale-95 shadow-md">
+          <button onClick={handleSend} disabled={isTyping} className="bg-emerald-500 text-white p-1.5 rounded-full hover:bg-emerald-600 transition-all active:scale-95 shadow-md disabled:opacity-50">
             <Send size={16} />
           </button>
         </div>

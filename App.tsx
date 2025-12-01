@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import ChatDemo from './components/ChatDemo';
 import TimelineChart from './components/TimelineChart';
-import { askCEO } from './services/geminiService';
 import { 
   SectionId, 
   Persona 
@@ -16,24 +15,12 @@ import {
   FINANCIALS 
 } from './constants';
 import { 
-  PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line
 } from 'recharts';
-import { Send, Bot } from 'lucide-react';
+import { Globe, Target, TrendingUp, DollarSign, ShieldCheck } from 'lucide-react';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<SectionId>(SectionId.TITLE);
-  const [ceoQuestion, setCeoQuestion] = useState('');
-  const [ceoResponse, setCeoResponse] = useState('');
-  const [isLoadingCEO, setIsLoadingCEO] = useState(false);
-
-  const handleAskCEO = async () => {
-    if(!ceoQuestion.trim()) return;
-    setIsLoadingCEO(true);
-    setCeoResponse('');
-    const answer = await askCEO(ceoQuestion);
-    setCeoResponse(answer);
-    setIsLoadingCEO(false);
-  };
 
   // --- Section Renderers ---
 
@@ -99,60 +86,108 @@ export default function App() {
     <div className="space-y-12 animate-fade-in max-w-5xl mx-auto">
       <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r mb-8">
         <p className="text-amber-800 text-sm">
-          <strong>Note:</strong> Specific Address-based Competition and Pricing data requires local context. 
-          Below is a strategic overview based on general market analysis.
+          <strong>Location Context:</strong> While grounded in Walton, NY, our digital distribution model targets the global fitness app market, specifically capturing North American users seeking affordable alternatives to premium coaching.
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        <section className="bg-white p-8 rounded-2xl shadow-sm">
-          <h3 className="text-2xl font-bold text-slate-800 mb-6">Competition Analysis</h3>
-          <ul className="space-y-4">
-            <li className="flex items-start gap-3">
-              <span className="bg-red-100 text-red-600 px-2 py-1 rounded text-xs font-bold mt-1">Generic</span>
-              <div>
-                <strong className="text-slate-800 block">Standard Tracking Apps (e.g., MFP)</strong>
-                <p className="text-sm text-slate-600">High manual entry effort, no coaching.</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="bg-red-100 text-red-600 px-2 py-1 rounded text-xs font-bold mt-1">Wearable</span>
-              <div>
-                <strong className="text-slate-800 block">Hardware Ecosystems (e.g., Whoop)</strong>
-                <p className="text-sm text-slate-600">Data rich, but lacks actionable daily behavioral coaching.</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="bg-emerald-100 text-emerald-600 px-2 py-1 rounded text-xs font-bold mt-1">Advantage</span>
-              <div>
-                <strong className="text-emerald-800 block">Vitalis AI (Us)</strong>
-                <p className="text-sm text-slate-600">Combines data with conversation. We don't just show charts; we tell you what to do.</p>
-              </div>
-            </li>
-          </ul>
-        </section>
-
-        <section className="bg-white p-8 rounded-2xl shadow-sm">
-          <h3 className="text-2xl font-bold text-slate-800 mb-6">Pricing Model</h3>
-          <div className="space-y-6">
-            <div className="border rounded-xl p-4 hover:border-emerald-400 transition-colors">
-              <div className="flex justify-between items-center mb-2">
-                <h4 className="font-bold text-slate-700">Freemium</h4>
-                <span className="text-2xl font-bold text-slate-900">$0</span>
-              </div>
-              <p className="text-sm text-slate-500">Basic logging, Limited AI interactions per day.</p>
-            </div>
-            <div className="border rounded-xl p-4 border-emerald-500 bg-emerald-50/30 relative">
-              <div className="absolute -top-3 right-4 bg-emerald-500 text-white text-xs px-2 py-1 rounded">Popular</div>
-              <div className="flex justify-between items-center mb-2">
-                <h4 className="font-bold text-slate-700">Pro Coach</h4>
-                <span className="text-2xl font-bold text-slate-900">$14.99<span className="text-sm font-normal text-slate-500">/mo</span></span>
-              </div>
-              <p className="text-sm text-slate-500">Unlimited AI Coaching, Photo Food Logging, Recovery Analytics.</p>
-            </div>
+      {/* Market Size & Overview */}
+      <section className="grid md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 bg-slate-900 text-white p-8 rounded-2xl relative overflow-hidden">
+          <Globe className="absolute top-4 right-4 text-slate-700 w-32 h-32 opacity-20" />
+          <h3 className="text-2xl font-bold mb-2">Market Size & Opportunity</h3>
+          <p className="text-slate-300 mb-6">The Global Fitness App Market Size was valued at USD 19.33 Billion in 2023 and is projected to reach USD 55.67 Billion by 2030.</p>
+          <div className="grid grid-cols-2 gap-8">
+             <div>
+               <p className="text-4xl font-bold text-emerald-400">17.6%</p>
+               <p className="text-xs text-slate-400 uppercase tracking-widest mt-1">CAGR Growth</p>
+             </div>
+             <div>
+               <p className="text-4xl font-bold text-emerald-400">$14.99</p>
+               <p className="text-xs text-slate-400 uppercase tracking-widest mt-1">Our Price Point</p>
+             </div>
           </div>
-        </section>
-      </div>
+        </div>
+        <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center">
+          <Target className="text-emerald-500 w-10 h-10 mb-4" />
+          <h4 className="text-lg font-bold text-slate-800">Target Segment</h4>
+          <p className="text-slate-600 text-sm mt-2">We are targeting the "Middle Market": users who find free apps (Nike Training Club) too generic, but personal trainers ($150+/mo) or high-end services (Noom, Whoop) too expensive.</p>
+        </div>
+      </section>
+
+      {/* Competitor Analysis Matrix */}
+      <section className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+        <h3 className="text-2xl font-bold text-slate-800 mb-6">Competitive Landscape & Pricing</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left">
+            <thead className="bg-slate-50 text-slate-500 font-bold uppercase text-xs">
+              <tr>
+                <th className="px-6 py-4 rounded-tl-xl">Competitor</th>
+                <th className="px-6 py-4">Est. Price</th>
+                <th className="px-6 py-4">Primary Offering</th>
+                <th className="px-6 py-4 rounded-tr-xl">Gap / Weakness</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              <tr>
+                <td className="px-6 py-4 font-bold text-slate-800">MyFitnessPal Premium</td>
+                <td className="px-6 py-4">$19.99/mo</td>
+                <td className="px-6 py-4">Calorie Counting</td>
+                <td className="px-6 py-4 text-slate-600">Manual entry is tedious; generic advice.</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 font-bold text-slate-800">Noom</td>
+                <td className="px-6 py-4">~$59/mo</td>
+                <td className="px-6 py-4">Psychology & Diet</td>
+                <td className="px-6 py-4 text-slate-600">Extremely expensive; high churn rate.</td>
+              </tr>
+              <tr>
+                <td className="px-6 py-4 font-bold text-slate-800">Whoop</td>
+                <td className="px-6 py-4">~$30/mo</td>
+                <td className="px-6 py-4">Recovery Hardware</td>
+                <td className="px-6 py-4 text-slate-600">Requires expensive wearable purchase.</td>
+              </tr>
+              <tr className="bg-emerald-50/50">
+                <td className="px-6 py-4 font-bold text-emerald-700">Vitalis AI (Us)</td>
+                <td className="px-6 py-4 font-bold text-emerald-700">$14.99/mo</td>
+                <td className="px-6 py-4">Holistic AI Coach</td>
+                <td className="px-6 py-4 text-emerald-700">Combines Nutrition + Fitness + Recovery.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Pricing Strategy Rationale */}
+      <section className="grid md:grid-cols-2 gap-8">
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+          <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <DollarSign className="text-emerald-500" size={20} />
+            Pricing Strategy
+          </h3>
+          <p className="text-slate-600 text-sm leading-relaxed mb-4">
+            <strong>Penetration Pricing Strategy:</strong> We have positioned Vitalis AI at <strong>$14.99/mo</strong>, which is 25-50% cheaper than direct premium competitors like MyFitnessPal Premium or Noom.
+          </p>
+          <p className="text-slate-600 text-sm leading-relaxed">
+            <strong>Why this price?</strong> This price point is the "sweet spot" for digital subscriptions (comparable to Netflix/Spotify). It is low enough to reduce friction for mass adoption by our "Beginner Fitness Seeker" persona, yet high enough to cover LLM (AI) API costs and ensure healthy gross margins as we scale.
+          </p>
+        </div>
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+          <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+             <ShieldCheck className="text-emerald-500" size={20} />
+             Value Proposition
+          </h3>
+          <ul className="space-y-3">
+             <li className="flex items-start gap-2 text-sm text-slate-600">
+               <span className="w-5 h-5 bg-emerald-100 text-emerald-600 rounded flex items-center justify-center font-bold text-xs mt-0.5">1</span>
+               <span><strong>Cost Consolidation:</strong> Users can cancel their separate nutrition app ($20) and workout app ($15) and replace both with Vitalis ($15).</span>
+             </li>
+             <li className="flex items-start gap-2 text-sm text-slate-600">
+               <span className="w-5 h-5 bg-emerald-100 text-emerald-600 rounded flex items-center justify-center font-bold text-xs mt-0.5">2</span>
+               <span><strong>Zero Hardware Cost:</strong> Unlike Whoop or Oura, we leverage the phone sensors and camera the user already owns.</span>
+             </li>
+          </ul>
+        </div>
+      </section>
     </div>
   );
 
@@ -267,6 +302,43 @@ export default function App() {
           </div>
         </div>
       </div>
+
+      {/* Logic & Reasoning Section */}
+      <section className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+        <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+           <TrendingUp className="text-emerald-600" />
+           Growth Logic & Assumptions
+        </h3>
+        <div className="grid md:grid-cols-3 gap-8">
+           <div>
+              <div className="flex items-center gap-2 mb-3">
+                 <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-600">1</div>
+                 <h4 className="font-bold text-slate-800">Year 1: Validation</h4>
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                 We project modest profits ($30k) despite $150k revenue due to high initial Customer Acquisition Costs (CAC) via social ads. The focus is on product-market fit. 5,000 users is a conservative estimate based on 0.5% conversion of our initial marketing reach.
+              </p>
+           </div>
+           <div>
+              <div className="flex items-center gap-2 mb-3">
+                 <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-600">2</div>
+                 <h4 className="font-bold text-slate-800">Year 2: Retention</h4>
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                 Profit jumps 10x as CAC decreases. The conversational nature of the app creates high "stickiness" (retention). As users feed more data, the AI becomes more personalized, making it harder to leave, thus increasing Lifetime Value (LTV).
+              </p>
+           </div>
+           <div>
+              <div className="flex items-center gap-2 mb-3">
+                 <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-600">3</div>
+                 <h4 className="font-bold text-slate-800">Year 3: Scale</h4>
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                 Revenue scales non-linearly to $2.5M. By Year 3, we introduce "Vitalis for Teams" (Corporate Wellness), allowing us to acquire users in bulk contracts. Server costs per user drop due to optimization, yielding a robust 64% net profit margin.
+              </p>
+           </div>
+        </div>
+      </section>
     </div>
   );
 
@@ -306,37 +378,6 @@ export default function App() {
       <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
       
       <main className="ml-64 flex-1 p-8 lg:p-12 overflow-y-auto relative">
-        {/* AI CEO Helper */}
-        <div className="fixed bottom-8 right-8 z-40 flex flex-col items-end pointer-events-none">
-          {ceoResponse && (
-             <div className="bg-slate-800 text-white p-4 rounded-2xl rounded-br-none shadow-2xl max-w-xs mb-4 animate-fade-in border border-slate-700 pointer-events-auto">
-               <div className="flex justify-between items-start mb-2">
-                 <span className="text-emerald-400 text-xs font-bold uppercase">CEO Bot</span>
-                 <button onClick={() => setCeoResponse('')} className="text-slate-400 hover:text-white text-xs">✕</button>
-               </div>
-               <p className="text-sm leading-relaxed">{ceoResponse}</p>
-             </div>
-          )}
-          
-          <div className="pointer-events-auto bg-white p-2 rounded-full shadow-xl border border-slate-200 flex items-center gap-2 transition-all hover:w-96 w-12 hover:rounded-xl overflow-hidden group h-12">
-             <div className="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center shrink-0">
-               <Bot size={18} className="text-emerald-400" />
-             </div>
-             <div className="flex-1 flex opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-               <input 
-                className="bg-transparent text-sm outline-none w-full" 
-                placeholder="Ask the CEO about the plan..." 
-                value={ceoQuestion}
-                onChange={(e) => setCeoQuestion(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleAskCEO()}
-               />
-               <button disabled={isLoadingCEO} onClick={handleAskCEO} className="text-emerald-600 hover:bg-emerald-50 p-1 rounded">
-                 {isLoadingCEO ? '...' : <Send size={16} />}
-               </button>
-             </div>
-          </div>
-        </div>
-
         {/* Content Area */}
         <div className="max-w-7xl mx-auto min-h-[80vh]">
           {activeSection === SectionId.TITLE && renderTitlePage()}
