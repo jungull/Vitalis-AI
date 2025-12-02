@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import ChatDemo from './components/ChatDemo';
 import TimelineChart from './components/TimelineChart';
+import PrintablePlan from './components/PrintablePlan';
 import { 
   SectionId, 
   Persona 
@@ -21,6 +22,12 @@ import { Globe, Target, TrendingUp, DollarSign, ShieldCheck } from 'lucide-react
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<SectionId>(SectionId.TITLE);
+  const [showPrintView, setShowPrintView] = useState(false);
+
+  // If Print View is active, render it exclusively
+  if (showPrintView) {
+    return <PrintablePlan onBack={() => setShowPrintView(false)} />;
+  }
 
   // --- Section Renderers ---
 
@@ -119,7 +126,7 @@ export default function App() {
         <h3 className="text-2xl font-bold text-slate-800 mb-6">Competitive Landscape & Pricing</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="bg-slate-50 text-slate-500 font-bold uppercase text-xs">
+            <thead className="bg-slate-50 text-slate-500 font-bold uppercase text-xs border-b border-slate-100">
               <tr>
                 <th className="px-6 py-4 rounded-tl-xl">Competitor</th>
                 <th className="px-6 py-4">Est. Price</th>
@@ -130,27 +137,27 @@ export default function App() {
             <tbody className="divide-y divide-slate-100">
               <tr>
                 <td className="px-6 py-4 font-bold text-slate-800">MyFitnessPal Premium</td>
-                <td className="px-6 py-4">$19.99/mo</td>
-                <td className="px-6 py-4">Calorie Counting</td>
+                <td className="px-6 py-4 text-emerald-800">$19.99 / month</td>
+                <td className="px-6 py-4 text-slate-700">Calorie & Macro Tracking</td>
                 <td className="px-6 py-4 text-slate-600">Manual entry is tedious; generic advice.</td>
               </tr>
               <tr>
                 <td className="px-6 py-4 font-bold text-slate-800">Noom</td>
-                <td className="px-6 py-4">~$59/mo</td>
-                <td className="px-6 py-4">Psychology & Diet</td>
+                <td className="px-6 py-4 text-emerald-800">~$59.00 / month</td>
+                <td className="px-6 py-4 text-slate-700">Psychology-based Weight Loss</td>
                 <td className="px-6 py-4 text-slate-600">Extremely expensive; high churn rate.</td>
               </tr>
               <tr>
                 <td className="px-6 py-4 font-bold text-slate-800">Whoop</td>
-                <td className="px-6 py-4">~$30/mo</td>
-                <td className="px-6 py-4">Recovery Hardware</td>
-                <td className="px-6 py-4 text-slate-600">Requires expensive wearable purchase.</td>
+                <td className="px-6 py-4 text-emerald-800">~$30.00 / month</td>
+                <td className="px-6 py-4 text-slate-700">Biometric Recovery (Wearable)</td>
+                <td className="px-6 py-4 text-slate-600">Requires expensive hardware purchase.</td>
               </tr>
-              <tr className="bg-emerald-50/50">
-                <td className="px-6 py-4 font-bold text-emerald-700">Vitalis AI (Us)</td>
-                <td className="px-6 py-4 font-bold text-emerald-700">$14.99/mo</td>
-                <td className="px-6 py-4">Holistic AI Coach</td>
-                <td className="px-6 py-4 text-emerald-700">Combines Nutrition + Fitness + Recovery.</td>
+              <tr className="bg-emerald-50 border-l-4 border-emerald-500">
+                <td className="px-6 py-4 font-bold text-emerald-900">Vitalis AI (Us)</td>
+                <td className="px-6 py-4 font-bold text-emerald-700">$14.99 / month</td>
+                <td className="px-6 py-4 font-medium text-emerald-800">Holistic AI Wellness Coach</td>
+                <td className="px-6 py-4 text-emerald-700">Combines Nutrition, Fitness & Recovery.</td>
               </tr>
             </tbody>
           </table>
@@ -375,7 +382,11 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen bg-slate-50 font-sans text-slate-900">
-      <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+      <Sidebar 
+        activeSection={activeSection} 
+        setActiveSection={setActiveSection} 
+        onPrint={() => setShowPrintView(true)}
+      />
       
       <main className="ml-64 flex-1 p-8 lg:p-12 overflow-y-auto relative">
         {/* Content Area */}
